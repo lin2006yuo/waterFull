@@ -1,0 +1,23 @@
+<div class="vue-waterfall-easy-container" :style="{width: width&amp;&amp;!isMobile ? width+'px' : '', height: parseFloat(height)==height ? height+'px': height }">
+    <div class="loading ball-beat" v-show="isPreloading_c" :class="{first:isFirstLoad}">
+        <slot name="loading" :isFirstLoad="isFirstLoad"></slot>
+        <div class="dot" v-if="!hasLoadingSlot" v-for="n in loadingDotCount" :style="loadingDotStyle"></div>
+    </div>
+    <div class="vue-waterfall-easy-scroll" ref="scrollEl">
+        <slot name="waterfall-head"></slot>
+        <div class="vue-waterfall-easy" :style="isMobile? '' :{width: colWidth*cols+'px',left:'50%', marginLeft: -1*colWidth*cols/2 +'px'}">
+            <div class="img-box" v-for="(v,i) in imgsArr_c" :class="[cardAnimationClass, {__err__: v._error}]" :style="{padding: (isMobile ? mobileGap : gap)/2+'px', width: isMobile ? '' : colWidth+'px'}">
+                <component class="img-inner-box" :is="isRouterLink  &amp;&amp; linkRange=='card' ? 'router-link' : 'alink'"
+                    :data-index="i" :to="linkRange=='card' ? v[hrefKey] : false">
+                    <component class="img-wraper" v-if="v[srcKey]" :is="isRouterLink &amp;&amp; linkRange=='img' ? 'router-link' :'alink'"
+                        :to="linkRange=='img' ? v[hrefKey] : false " :style="{width:imgWidth_c + 'px',height:v._height ? v._height+'px':false}"><img
+                            :src="v[srcKey]" /></component>
+                    <slot :index="i" :value="v"></slot>
+                </component>
+            </div>
+            <div class="over" v-if="over" ref="over">
+                <slot name="waterfall-over">被你看光了</slot>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+.vue-waterfall-easy-container(:style="{width: width&&!isMobile ? width+'px' : '', height: parseFloat(height)==height ? height+'px': height }")
+  .loading.ball-beat(v-show="isPreloading_c", :class="{first:isFirstLoad}")
+    slot(name="loading", :isFirstLoad="isFirstLoad")
+    .dot(v-if="!hasLoadingSlot", v-for="n in loadingDotCount",:style="loadingDotStyle")
+  //- 为了防止loading 跟随滚动
+  .vue-waterfall-easy-scroll(ref="scrollEl")
+    slot(name="waterfall-head")
+    .vue-waterfall-easy(:style="isMobile? '' :{width: colWidth*cols+'px',left:'50%', marginLeft: -1*colWidth*cols/2 +'px'}")
+      .img-box(
+        v-for="(v,i) in imgsArr_c",
+        :class="[cardAnimationClass, {__err__: v._error}]"
+        :style="{padding: (isMobile ? mobileGap : gap)/2+'px', width: isMobile ? '' : colWidth+'px'}"
+      )
+        component.img-inner-box(
+          :is="isRouterLink  && linkRange=='card' ? 'router-link' : 'alink'",
+          :data-index="i",
+          :to="linkRange=='card' ? v[hrefKey] : false")
+          component.img-wraper(
+            v-if="v[srcKey]",
+            :is="isRouterLink && linkRange=='img' ? 'router-link' :'alink'",
+            :to="linkRange=='img' ? v[hrefKey] : false ",
+            :style="{width:imgWidth_c + 'px',height:v._height ? v._height+'px':false}")
+            img(:src="v[srcKey]")
+          slot(:index="i",:value="v")
+      .over(v-if="over",ref="over")
+        slot(name="waterfall-over") 被你看光了
