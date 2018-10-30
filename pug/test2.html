@@ -1,0 +1,11 @@
+<div id="app"><a id="header" href="https://github.com/lfyfly/vue-waterfall-easy" target="_blank" title="github of vue-waterfall-easy">vue-waterfall-easy</a><button
+        :style="{position:'fixed',zIndex:10000}" @click="changeImgArr">changeImgArr</button>
+    <div id="content">
+        <vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" @scrollReachBottom="getData" @click="clickFn" @imgError="imgErrorFn">
+            <div class="img-info" slot-scope="props">
+                <p class="some-info">第{{props.index+1}}张图片</p>
+                <p class="some-info">{{props.value.info}}</p>
+            </div>
+        </vue-waterfall-easy>
+    </div>
+</div>
